@@ -38,6 +38,36 @@
 			<div id='tooltip' ></div>
 		</div>
 		
-		
+		<div id="force">
+			<h1>Force Designer</h1>
+			<div id="load">
+					<label for="string">Force code:</label>
+					<input type="text" name="string" id="string"/>
+					<button ng-click="count = count + 1" ng-init="count=0">Load</button>
+				</form> 
+			</div>
+			
+			<div id="save">
+				<label for="save">Generate force code here:</label>
+				<button ng-click="showCode()" ng-init="count=0">Save</button>
+				<div id="save_output"></div>
+			</div>
+			<br />
+			
+			<select ng-model="formationSelect">
+				<option selected={{$first}} ng-repeat="(key,formation) in formations | orderBy:key" value="{{key}}">{{formation.formationName + " [" + formation.1 + "-" + formation.2 + "-" + formation.4 + "-" + formation.11 + "-" + formation.12 +"]"}}</option>
+			</select>
+			<button ng-click="formationActualSelect = formationSelect" ng-init="count=0">Change</button>
+			
+			<div class="force_section" ng-repeat="type in [1,2,4,11,12]">
+				<h3>{{types[type].typeName}}</h3>
+
+				<div ng-repeat="(k,n) in getFormationCount(type)" class='unit-force' sid={{type}} aid={{k}}></div>
+			</div>
+			<div class="force_section">
+				<h3>Reinforcements</h3>
+				<div ng-repeat="(k,n) in getNumber(50)" class='unit-force unit-re' sid=50 aid={{k}}></div>
+			</div>
+		</div>
 </body>
 </html>

@@ -12,6 +12,16 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		$scope.types = data['types'];
 		$scope.subtypes = data['subtypes'];
 	});
+	$scope.getNumber = function(num) {
+		var a = [];
+		for(var i = 0; i < num; i++)
+			a.push(i);
+		return a;   
+	};
+	$scope.getFormationCount = function(num) {
+		if(typeof $scope.formations === 'undefined') return [];
+		return $scope.getNumber($scope.formations[$scope.formationActualSelect][num]);   
+	};
 	$scope.unique = function(u){
 		if(u == 0) return "";
 		else return "Unique";
