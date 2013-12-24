@@ -12,4 +12,12 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		$scope.types = data['types'];
 		$scope.subtypes = data['subtypes'];
 	});
+
+	$scope.copyTooltip = function(id){console.log(id);
+		var el = document.getElementById('unit-' + id);
+		if(el != null)
+			document.getElementById('tooltip').innerHTML = el.innerHTML;
+	}
+	$scope.formationSelect = 1;
+	$scope.formationActualSelect = 1;
 });

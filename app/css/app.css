@@ -1,6 +1,117 @@
 /* app css stylesheet */
 
-body {
-  padding-top: 20px;
+.ui-draggable{
+	cursor: move;
+}
+.unit-sidebar, .unit-force{
+	width: 35px;
+	height: 35px;
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	background-color: #333;
+	background-size: 100% auto;
+}
+.unit-force{
+	width: 50px;
+	height: 50px;
 }
 
+.unique{
+	color: #AAFFAA;
+}
+
+.unit-disabled{
+	opacity: .30; /* Standard: FF gt 1.5, Opera, Safari, CSS3 */
+	filter: alpha(opacity=30); /* IE lt 8 */
+	-ms-filter: "alpha(opacity=30)"; /* IE 8 */
+	-khtml-opacity: .30; /* Safari 1.x */
+	-moz-opacity: .30; /* FF lt 1.5, Netscape */
+}
+
+.unit-re{
+	width: 30px;
+	height: 30px;
+	margin-right: 3px;
+	margin-bottom: 3px;
+}
+
+.unit-drop{
+	border:2px solid #FF9955;
+	margin: 0;
+}
+
+.unit-drop-re{
+	border:2px solid #FF9955;
+	margin: 0;
+}
+
+.unit-drop-here{
+	border:2px solid #FF5511;
+	background-color: rgb(217, 206, 173);
+
+}
+
+#unused {
+	float:left;
+	width:310px;
+	height:300px;
+	overflow:scroll;
+	background-color: #EEE;
+}
+#unused .unused_section:last-child{
+	padding-bottom: 200px;
+}
+.unused_section {
+	width:290px;
+	border-bottom: 12px;
+}
+.unused_section:after{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	zoom: 1;
+}
+#force {
+	width:300px;
+	margin-left:320px;
+}
+#force table{
+	border-spacing:0;
+    border-collapse:collapse;
+}
+.force_section:after{
+	content: ".";
+	display: block;
+	height: 0;
+	clear: both;
+	visibility: hidden;
+	zoom: 1;
+}
+#scroller{
+	width:295px;
+	position:relative;
+	float: left;
+}
+#tooltip{
+	font-size: 90%;
+	background-color: #CCC;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+}
+.sticky {
+	position: fixed !important;
+	top: 0;
+}
+
+.countbox{
+	font-size: 80%;
+	background-color: #333;
+	color: #EEE;
+	height:12px;
+	width: 12px;
+	text-align: center;
+}
