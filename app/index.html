@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>War Metal Force Editor</title>
   <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-sanitize.min.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
@@ -25,8 +26,18 @@
 			<div class="unused_section" ng-repeat="type in [1,2,4,11,12,0]">
 				<h3>{{types[type].typeName}}</h3>
 				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" class='unit-sidebar unique' ng-mouseover='copyTooltip(unit.unitID)' back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}' mid={{unit.unitID}} sid={{type}}></div>
+				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" id="unit-{{unit.unitID}}" style="display:none;">
+					{{unit.unitName}} ({{types[unit.unitClass].typeName}}) [{{unique(unit.unitUnique)}}]
+					<br />{{subtypes[unit.unitType1].subtypeName}}
+					<br />{{subtypes[unit.unitType2].subtypeName}}
+					<br />Attack: {{unit.unitAttack}}
+					<br />Defence: {{unit.unitDefence}}
+					<br /><span ng-bind-html="getDescription(unit.unitID)"></span>
+				<br /></div>
 			</div>
 			<div id='tooltip' ></div>
 		</div>
+		
+		
 </body>
 </html>
