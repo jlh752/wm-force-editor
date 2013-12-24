@@ -55,12 +55,12 @@
 			<br />
 			
 			<select ng-model="formationSelect">
-				<option selected={{$first}} ng-repeat="(key,formation) in formations | orderBy:key" value="{{key}}">{{formation.formationName + " [" + formation.1 + "-" + formation.2 + "-" + formation.4 + "-" + formation.11 + "-" + formation.12 +"]"}}</option>
+				<option ng-repeat="formation in formations | toarray | orderBy:-['formationID']:true" value="{{formation.formationID}}">{{formation.formationName + " [" + formation.1 + "-" + formation.2 + "-" + formation.4 + "-" + formation.11 + "-" + formation.12 +"]"}}</option>
 			</select>
 			<button ng-click="formationActualSelect = formationSelect" ng-init="count=0">Change</button>
 			
 			<div class="force_section" ng-repeat="type in [1,2,4,11,12]">
-				<h3>{{types[type].typeName}}</h3>
+				<h3 ng-hide="getFormationCount(type).length == 0">{{types[type].typeName}}</h3>
 
 				<div ng-repeat="(k,n) in getFormationCount(type)" class='unit-force' sid={{type}} aid={{k}}></div>
 			</div>
