@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>War Metal Force Editor</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular/angular-sanitize.min.js"></script>
   <script src="js/controllers.js"></script>
@@ -13,6 +15,7 @@
   <link href="css/app.css" rel="stylesheet" type="text/css" />
 </head>
 <body ng-controller="wmForceEdCtrl">
+	<div class="header" style="width:100%;height:200px;background-color:#555"></div>
 	<div id="scroller-anchor"></div>
 	<div id="scroller">	
 		Name/Ability Search: <input ng-model="unitSearch">
@@ -25,7 +28,7 @@
 		<div id="unused">
 			<div class="unused_section" ng-repeat="type in [1,2,4,11,12,0]">
 				<h3>{{types[type].typeName}}</h3>
-				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" class='unit-sidebar unique' ng-mouseover='copyTooltip(unit.unitID)' back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}' mid={{unit.unitID}} sid={{type}}></div>
+				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" class='unit-sidebar unique' ng-mouseover='copyTooltip(unit.unitID)' back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}' mid={{unit.unitID}} sid={{type}} setup-directive></div>
 				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" id="unit-{{unit.unitID}}" style="display:none;">
 					{{unit.unitName}} ({{types[unit.unitClass].typeName}}) [{{unique(unit.unitUnique)}}]
 					<br />{{subtypes[unit.unitType1].subtypeName}}
@@ -35,39 +38,40 @@
 					<br /><span ng-bind-html="getDescription(unit.unitID)"></span>
 				<br /></div>
 			</div>
-			<div id='tooltip' ></div>
+		</div>
+		<div id='tooltip' ></div>
+	</div>
+	
+	<div id="force">
+		<h1>Force Designer</h1>
+		<div id="load">
+				<label for="string">Force code:</label>
+				<input type="text" name="string" id="string"/>
+				<button ng-click="count = count + 1" ng-init="count=0">Load</button>
+			</form> 
 		</div>
 		
-		<div id="force">
-			<h1>Force Designer</h1>
-			<div id="load">
-					<label for="string">Force code:</label>
-					<input type="text" name="string" id="string"/>
-					<button ng-click="count = count + 1" ng-init="count=0">Load</button>
-				</form> 
-			</div>
-			
-			<div id="save">
-				<label for="save">Generate force code here:</label>
-				<button ng-click="showCode()" ng-init="count=0">Save</button>
-				<div id="save_output"></div>
-			</div>
-			<br />
-			
-			<select ng-model="formationSelect">
-				<option ng-repeat="formation in formations | toarray | orderBy:-['formationID']:true" value="{{formation.formationID}}">{{formation.formationName + " [" + formation.1 + "-" + formation.2 + "-" + formation.4 + "-" + formation.11 + "-" + formation.12 +"]"}}</option>
-			</select>
-			<button ng-click="formationActualSelect = formationSelect" ng-init="count=0">Change</button>
-			
-			<div class="force_section" ng-repeat="type in [1,2,4,11,12]">
-				<h3 ng-hide="getFormationCount(type).length == 0">{{types[type].typeName}}</h3>
-
-				<div ng-repeat="(k,n) in getFormationCount(type)" class='unit-force' sid={{type}} aid={{k}}></div>
-			</div>
-			<div class="force_section">
-				<h3>Reinforcements</h3>
-				<div ng-repeat="(k,n) in getNumber(50)" class='unit-force unit-re' sid=50 aid={{k}}></div>
-			</div>
+		<div id="save">
+			<label for="save">Generate force code here:</label>
+			<button ng-click="showCode()" ng-init="count=0">Save</button>
+			<div id="save_output"></div>
 		</div>
+		<br />
+		
+		<select ng-model="formationSelect">
+			<option ng-repeat="formation in formations | toarray | orderBy:-['formationID']:true" value="{{formation.formationID}}">{{formation.formationName + " [" + formation.1 + "-" + formation.2 + "-" + formation.4 + "-" + formation.11 + "-" + formation.12 +"]"}}</option>
+		</select>
+		<button ng-click="formationActualSelect = formationSelect" ng-init="count=0">Change</button>
+		
+		<div class="force_section" ng-repeat="type in [1,2,4,11,12]">
+			<h3 ng-hide="getFormationCount(type).length == 0">{{types[type].typeName}}</h3>
+
+			<div ng-repeat="(k,n) in getFormationCount(type)" class='unit-force' sid={{type}} aid={{k}}></div>
+		</div>
+		<div class="force_section">
+			<h3>Reinforcements</h3>
+			<div ng-repeat="(k,n) in getNumber(50)" class='unit-force unit-re' sid=50 aid={{k}}></div>
+		</div>
+	</div>
 </body>
 </html>

@@ -66,14 +66,7 @@
 	width:290px;
 	border-bottom: 12px;
 }
-.unused_section:after{
-	content: ".";
-	display: block;
-	height: 0;
-	clear: both;
-	visibility: hidden;
-	zoom: 1;
-}
+
 #force {
 	width:300px;
 	margin-left:320px;
@@ -82,7 +75,11 @@
 	border-spacing:0;
     border-collapse:collapse;
 }
-.force_section:after{
+.force_section{
+	float:left;
+	width:100%
+}
+.unused_section:after,.force_section:after{
 	content: ".";
 	display: block;
 	height: 0;
