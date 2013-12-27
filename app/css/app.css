@@ -38,12 +38,14 @@
 
 .unit-drop{
 	border:2px solid #FF9955;
-	margin: 0;
+	width: 46px;
+	height: 46px;
 }
 
 .unit-drop-re{
 	border:2px solid #FF9955;
-	margin: 0;
+	width: 26px;
+	height: 26px;
 }
 
 .unit-drop-here{

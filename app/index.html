@@ -14,7 +14,7 @@
   <script src="js/app.js"></script>
   <link href="css/app.css" rel="stylesheet" type="text/css" />
 </head>
-<body ng-controller="wmForceEdCtrl">
+<body ng-controller="wmForceEdCtrl" key-checker>
 	<div class="header" style="width:100%;height:200px;background-color:#555"></div>
 	<div id="scroller-anchor"></div>
 	<div id="scroller">	
@@ -28,7 +28,8 @@
 		<div id="unused">
 			<div class="unused_section" ng-repeat="type in [1,2,4,11,12,0]">
 				<h3>{{types[type].typeName}}</h3>
-				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" class='unit-sidebar unique' ng-mouseover='copyTooltip(unit.unitID)' back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}' mid={{unit.unitID}} sid={{type}} setup-directive></div>
+				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" class="unit-sidebar" ng-class="unit.unitUnique==1?'unique':''"
+				 ng-mouseover='copyTooltip(unit.unitID)' back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}' mid={{unit.unitID}} sid={{type}} setup-draggable></div>
 				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" id="unit-{{unit.unitID}}" style="display:none;">
 					{{unit.unitName}} ({{types[unit.unitClass].typeName}}) [{{unique(unit.unitUnique)}}]
 					<br />{{subtypes[unit.unitType1].subtypeName}}
@@ -65,12 +66,11 @@
 		
 		<div class="force_section" ng-repeat="type in [1,2,4,11,12]">
 			<h3 ng-hide="getFormationCount(type).length == 0">{{types[type].typeName}}</h3>
-
-			<div ng-repeat="(k,n) in getFormationCount(type)" class='unit-force' sid={{type}} aid={{k}}></div>
+			<div ng-repeat="(k,n) in getFormationCount(type)" class='unit-force' sid={{type}} aid={{k}} setup-droppable></div>
 		</div>
 		<div class="force_section">
 			<h3>Reinforcements</h3>
-			<div ng-repeat="(k,n) in getNumber(50)" class='unit-force unit-re' sid=50 aid={{k}}></div>
+			<div ng-repeat="(k,n) in getNumber(50)" class='unit-force unit-re' sid=50 aid={{k}} setup-droppable></div>
 		</div>
 	</div>
 </body>
