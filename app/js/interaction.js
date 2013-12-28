@@ -62,6 +62,8 @@ function removeMe($o){
 		}
 	);
 }
+
+//finds the first available slot of the correct type and attempts to add it
 function addUnit($el){
 	var sid = $el.attr("sid");
 	var isre = (sid == 50);
@@ -74,6 +76,7 @@ function addUnit($el){
 	return addToSlot(slots[0], $el);
 }
 
+//attempts to add unit to slot incorporating game logic rules (e.g. uniques, etc)
 function addToSlot(slot, source){
 	$slot = $(slot);
 	var children = $slot.children();
@@ -120,7 +123,7 @@ function addToSlot(slot, source){
 	}
 	$nd.attr("mid", source.attr("mid"));
 	$nd.css("background-image", source.css("background-image"));
-	$nd.attr("onmouseover", source.attr("onmouseover"));
+	$nd.attr("onmouseover", 'copyTooltip('+source.attr("mid")+')');
 
 	makeDraggable($nd);
 
@@ -182,7 +185,7 @@ function makeDraggable(el){
 }
 
 function makeDroppable(e){
-	$el = $(e);
+	var $el = $(e);
 	var sid = $el.attr("sid");
 	var isre = (sid == 50);
 	
@@ -197,24 +200,9 @@ function makeDroppable(e){
 	});
 }
 
-function setupSidebar(){
-	
-}
 
-function setup(){
-	
-	
-	
-	
-	makeDraggable($('.unit-sidebar,.unit-force[mid]'));
-	
-	
-	disableUniques();
-}
-
-
-function copyTooltip(element){
-	var el = document.getElementById('unit-' + element.getAttribute('mid'));
+function copyTooltip(id){console.log(id+"!");
+	var el = document.getElementById('unit-' + id);console.log(el+"!");
 	if(el != null)
 		document.getElementById('tooltip').innerHTML = el.innerHTML;
 }

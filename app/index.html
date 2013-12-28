@@ -27,13 +27,13 @@
 		<div id="load">
 				<label for="string">Force code:</label>
 				<input type="text" name="string" id="string"/>
-				<button ng-click="count = count + 1" ng-init="count=0">Load</button>
+				<button ng-click="count = count + 1">Load</button>
 			</form> 
 		</div>
 		
 		<div id="save">
 			<label for="save">Generate force code here:</label>
-			<button ng-click="showCode()" ng-init="count=0">Save</button>
+			<button ng-click="showCode()" >Save</button>
 			<div id="save_output"></div>
 		</div>
 		
@@ -42,16 +42,16 @@
 				<h3>{{types[type].typeName}}</h3>
 				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" class="unit-sidebar" ng-class="unit.unitUnique==1?'unique':''"
 				 ng-mouseover='copyTooltip(unit.unitID)' back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}' mid={{unit.unitID}} sid={{type}} setup-draggable></div>
-				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" id="unit-{{unit.unitID}}" style="display:none;">
-					{{unit.unitName}} ({{types[unit.unitClass].typeName}}) [{{unique(unit.unitUnique)}}]
-					<br />{{subtypes[unit.unitType1].subtypeName}}
-					<br />{{subtypes[unit.unitType2].subtypeName}}
-					<br />Attack: {{unit.unitAttack}}
-					<br />Defence: {{unit.unitDefence}}
-					<br /><span ng-bind-html="getDescription(unit.unitID)"></span>
-				<br /></div>
 			</div>
 		</div>
+		<div ng-repeat="(unitID,unit) in units" id="unit-{{unit.unitID}}" style="display:none;">
+			{{unit.unitName}} ({{types[unit.unitClass].typeName}}) [{{unique(unit.unitUnique)}}]
+			<br />{{subtypes[unit.unitType1].subtypeName}}
+			<br />{{subtypes[unit.unitType2].subtypeName}}
+			<br />Attack: {{unit.unitAttack}}
+			<br />Defence: {{unit.unitDefence}}
+			<br /><span ng-bind-html="getDescription(unit.unitID)"></span>
+		<br /></div>
 		<div id='tooltip' ></div>
 	</div>
 	
@@ -60,7 +60,7 @@
 		<select ng-model="formationSelect">
 			<option ng-repeat="formation in formations | toarray | orderBy:-['formationID']:true" value="{{formation.formationID}}">{{formation.formationName + " [" + formation.1 + "-" + formation.2 + "-" + formation.4 + "-" + formation.11 + "-" + formation.12 +"]"}}</option>
 		</select>
-		<button ng-click="formationActualSelect = formationSelect" ng-init="count=0">Change</button>
+		<button ng-click="formationActualSelect = formationSelect">Change</button>
 		
 		<div class="force_section" ng-repeat="type in [1,2,4,11,12]">
 			<h3 ng-hide="getFormationCount(type).length == 0">{{types[type].typeName}}</h3>

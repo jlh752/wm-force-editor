@@ -59,6 +59,7 @@
 	height:300px;
 	overflow:scroll;
 	background-color: #EEE;
+	width:100%;
 }
 #unused .unused_section:last-child{
 	padding-bottom: 200px;
