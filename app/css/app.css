@@ -56,7 +56,6 @@
 
 #unused {
 	float:left;
-	width:310px;
 	height:300px;
 	overflow:scroll;
 	background-color: #EEE;
@@ -65,13 +64,13 @@
 	padding-bottom: 200px;
 }
 .unused_section {
-	width:290px;
+	width:100%;
 	border-bottom: 12px;
 }
 
 #force {
-	width:300px;
-	margin-left:320px;
+	width:50%;
+	margin-left:50%;
 }
 #force table{
 	border-spacing:0;
@@ -90,7 +89,7 @@
 	zoom: 1;
 }
 #scroller{
-	width:295px;
+	width:45%;
 	position:relative;
 	float: left;
 }
