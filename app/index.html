@@ -10,9 +10,11 @@
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
+  <script src="js/services.js"></script>
   <script src="js/interaction.js"></script>
   <script src="js/app.js"></script>
   <link href="css/app.css" rel="stylesheet" type="text/css" />
+  <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
 </head>
 <body ng-controller="wmForceEdCtrl" key-checker>
 	<div class="header" style="width:100%;height:200px;background-color:#555"></div>
@@ -25,23 +27,24 @@
 			<option ng-repeat="(key,subtype) in subtypes | orderBy:subtypeID:true" value="{{key}}">{{subtype.subtypeName}}</option>
 		</select>
 		<div id="load">
-				<label for="string">Force code:</label>
-				<input type="text" name="string" id="string"/>
-				<button ng-click="count = count + 1">Load</button>
+				<button ng-click="loadForce()">Load</button>
+				<div id="forceLoader" title="Enter Force Code" ng-init='initLoader()'>
+						<input type="text" name="forcecode" id="forcecode">
+				</div>
 			</form> 
 		</div>
 		
 		<div id="save">
 			<label for="save">Generate force code here:</label>
 			<button ng-click="showCode()" >Save</button>
-			<div id="save_output"></div>
+			<div id="save_output" style="word-break:break-all;"></div>
 		</div>
 		
 		<div id="unused">
 			<div class="unused_section" ng-repeat="type in [1,2,4,11,12,0]">
 				<h3>{{types[type].typeName}}</h3>
-				<div ng-repeat="(unitID,unit) in units | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" class="unit-sidebar" ng-class="unit.unitUnique==1?'unique':''"
-				 ng-mouseover='copyTooltip(unit.unitID)' back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}' mid={{unit.unitID}} sid={{type}} setup-draggable></div>
+				<div ng-repeat="(unitID,unit) in units | hidden:hide | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" class="unit-sidebar" ng-class="unit.unitUnique==1?'unique':''"
+				 ng-mouseover='copyTooltip(unit.unitID)' back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}' mid={{unit.unitID}} sid={{type}} ></div>
 			</div>
 		</div>
 		<div ng-repeat="(unitID,unit) in units" id="unit-{{unit.unitID}}" style="display:none;">
@@ -64,11 +67,11 @@
 		
 		<div class="force_section" ng-repeat="type in [1,2,4,11,12]">
 			<h3 ng-hide="getFormationCount(type).length == 0">{{types[type].typeName}}</h3>
-			<div ng-repeat="(k,n) in getFormationCount(type)" class='unit-force' sid={{type}} aid={{k}} setup-droppable></div>
+			<div ng-repeat="(k,n) in getFormationCount(type)" class='unit-force' sid={{type}} aid={{k}}></div>
 		</div>
 		<div class="force_section">
 			<h3>Reinforcements</h3>
-			<div ng-repeat="(k,n) in getNumber(50)" class='unit-force unit-re' sid=50 aid={{k}} setup-droppable></div>
+			<div ng-repeat="(k,n) in getNumber(50)" class='unit-force unit-re' sid=50 aid={{k}}></div>
 		</div>
 	</div>
 </body>

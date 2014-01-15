@@ -5,6 +5,11 @@
 var wmForceEd = angular.module('wmForceEd', ['ngSanitize']);
 
 wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
+	$scope.formationSelect = 1;
+	$scope.formationActualSelect = 1;
+	$scope.hide = 1;
+	$scope.shiftDown = false;
+	
 	$http.get('data.json').success(function(data) {
 		$scope.units = data['units'];
 		$scope.formations = data['formations'];
@@ -12,6 +17,7 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		$scope.types = data['types'];
 		$scope.subtypes = data['subtypes'];
 	});
+	
 	$scope.getNumber = function(num) {
 		var a = [];
 		for(var i = 0; i < num; i++)
@@ -39,11 +45,47 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		}
 		return text;
 	};
+	
 	$scope.copyTooltip = function(id){
 		var el = document.getElementById('unit-' + id);
 		if(el != null)
 			document.getElementById('tooltip').innerHTML = el.innerHTML;
 	}
-	$scope.formationSelect = 1;
-	$scope.formationActualSelect = 1;
+
+	$scope.showCode = function(){
+		var out = "<textarea>1,";
+		out += $scope.formationActualSelect + ",";
+		$('.unit-force').each(function(ind, e){
+			if($(e).is("[aid]")){
+				if($(e).children().length == 0)
+					out += $(e).attr("sid") + ",";
+			}else{
+				out += $(e).attr("mid") + ",";
+			}
+		});
+		$('#save_output').html(out+"</textarea>").dialog({
+			title: 'Force Code'
+		});
+	};
+	$scope.initLoader = function(){
+		$("#forceLoader").dialog({
+			autoOpen: false,
+			modal: true,
+			buttons: {
+				"Load": function() {
+					$scope.loadForceCode($("#forcecode").val());
+					$(this).dialog("close");
+				},
+				"Cancel": function(){
+					$(this).dialog("close");
+				}
+			}
+		});
+	};
+	$scope.loadForce = function(){
+		$("#forceLoader").dialog("open");
+	};
+	$scope.loadForceCode = function(str){
+		
+	};
 });

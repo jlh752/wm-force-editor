@@ -23,6 +23,17 @@ wmForceEd.filter('subtypeFilter', function() {
 		return out;
 	};
 });
+wmForceEd.filter('hidden', function() {
+	return function(input, hide){
+		var out = [];
+		if(!hide) return input;
+		for(var i in input){
+			if(input[i].unitHidden === '0')
+				out.push(input[i]);
+		}
+		return out;
+	};
+});
 wmForceEd.filter('toarray', function() {
 	return function(input, type){
 		var out = [];

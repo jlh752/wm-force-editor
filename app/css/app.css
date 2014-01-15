@@ -100,6 +100,8 @@
 	width: 100%;
 	position: absolute;
 	bottom: 0;
+	max-height: 50%;
+	overflow-y: scroll;
 }
 .sticky {
 	position: fixed !important;
@@ -114,3 +116,10 @@
 	width: 12px;
 	text-align: center;
 }
+
+#save_output textarea{
+	width:100%;
+	max-width:100%;
+	font-size: 12px;
+}
+.ui-dialog { clear: both; }
