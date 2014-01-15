@@ -97,11 +97,12 @@
 #tooltip{
 	font-size: 90%;
 	background-color: #CCC;
-	width: 100%;
+	
 	position: absolute;
 	bottom: 0;
 	max-height: 50%;
 	overflow-y: scroll;
+	left: 0px; right: 18px
 }
 .sticky {
 	position: fixed !important;
