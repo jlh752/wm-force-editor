@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-var wmForceEd = angular.module('wmForceEd', ['ngSanitize']);
+var wmForceEd = angular.module('wmForceEd', ['ngSanitize', 'ngDragDrop']);
 
 wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 	$scope.formationSelect = 1;
@@ -20,19 +20,10 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		
 		$scope.padForce();
 	});
-	$scope.padForce = function(){
-		for(var t in $scope.types){
-			if(typeof $scope.forceData[t] === "undefined")
-				$scope.forceData[t] = [];
-			var l = $scope.formations[$scope.formationActualSelect][t];
-			if(t == 50) l = 50;
-			while($scope.forceData[t].length < l)
-				$scope.forceData[t].push(0);
-			if($scope.forceData[t].length >= l)
-				$scope.forceData[t] = $scope.forceData[t].slice(0, l);
-		}
-	};
 	
+	/*
+		BINDING RELATED FUNCTIONS
+	*/
 	$scope.getNumber = function(num) {
 		var a = [];
 		for(var i = 0; i < num; i++)
@@ -47,32 +38,69 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		if(u == 0) return "";
 		else return text;
 	};
-	
-	//generate tooltip suitable version of description text
-	$scope.getDescription = function(id){
-		var unitSkills = $scope.units[id]['unitAbilities'].split(';');
-		var text = "";
-		for(var i = 0, n = unitSkills.length; i < n; i++){
-			var sk = unitSkills[i];
-			if(sk === '') break;
-			var s_explode = sk.split('|'),
-				sid = s_explode[0],
-				sp = s_explode[1];
-			text += "<b>"+$scope.skills[sid]['skillName']+" ("+(100*sp)+"%): </b>"+$scope.skills[sid]['skillDescription']+"<br />";
-		}
-		return text;
+	$scope.uniqueExists = function(sec, id){
+		id = parseInt(id);
+		if($scope.units[id].unitUnique == 0) return false;
+		return($scope.forceData[sec].indexOf(id) != -1 || $scope.forceData[50].indexOf(id) != -1);
 	};
-	
-	$scope.copyTooltip = function(id){
-		var el = document.getElementById('unit-' + id);
-		if(el != null)
-			document.getElementById('tooltip').innerHTML = el.innerHTML;
-	};
-	
 	$scope.setFormation = function(){
 		$scope.formationActualSelect = $scope.formationSelect;
 		$scope.padForce();
 	};
+	
+	/*
+		DRAG DROP FUNCTIONS
+	*/
+	$scope.lastDragged = null;
+	//when a unit is dropped on a valid spot
+	$scope.dropUnit = function(event, ui){
+		var $tar = $(event.target);
+		var $src = $(ui.draggable);
+		$src.removeClass("unit-fake-disabled");
+
+		var src_mid = $src.attr('mid');
+		var tar_sid = $tar.attr('sid');
+		var tar_aid = $tar.attr('aid');
+		
+		if($src.is(".unit-force")){
+			var src_sid = $src.parent().attr('sid');
+			var src_aid = $src.parent().attr('aid');
+			var tar_mid = $tar.children().attr('mid');
+			
+			if(!$scope.shiftDown || $scope.units[src_mid].unitUnique == 1 || $src.parent().attr("sid") == 50)
+				$scope.removeSlot(src_sid, src_aid);
+			
+			if($tar.children().length > 0){
+				$scope.removeSlot(tar_sid, tar_aid);
+				$scope.addToSlot(src_sid, src_aid, tar_mid);
+			}
+		}
+
+		$scope.addToSlot(tar_sid, tar_aid, src_mid);
+	};
+	//stop dragging an in-force unit
+	$scope.dragStart = function(event, ui){
+		var $src = $(event.target);
+		$scope.lastDragged = $src;
+		if(!$scope.shiftDown || $scope.units[$src.attr("mid")].unitUnique == 1 || $src.parent().attr("sid") == 50){
+			$src.addClass("unit-fake-disabled");
+		}
+	};
+	//stop dragging an in-force unit
+	$scope.dragStop = function(event, ui){
+		$(event.target).removeClass("unit-fake-disabled");
+	};
+	$scope.removeRevert = function(a){
+		if(a == false){
+			$scope.removeSlot($scope.lastDragged.parent().attr("sid"), $scope.lastDragged.parent().attr("aid"));
+			return false;
+		}
+		return true;
+	};
+
+	/*
+		OTHER INTERFACE
+	*/
 	$scope.showCode = function(){
 		var out = "<textarea>1,";
 		out += $scope.formationActualSelect + ",";
@@ -111,7 +139,29 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 	$scope.loadForce = function(){
 		$("#forceLoader").dialog("open");
 	};
+	//generate tooltip suitable version of description text
+	$scope.getDescription = function(id){
+		var unitSkills = $scope.units[id]['unitAbilities'].split(';');
+		var text = "";
+		for(var i = 0, n = unitSkills.length; i < n; i++){
+			var sk = unitSkills[i];
+			if(sk === '') break;
+			var s_explode = sk.split('|'),
+				sid = s_explode[0],
+				sp = s_explode[1];
+			text += "<b>"+$scope.skills[sid]['skillName']+" ("+Math.round(100*sp, 10)+"%): </b>"+$scope.skills[sid]['skillDescription']+"<br />";
+		}
+		return text;
+	};
+	$scope.copyTooltip = function(id){
+		var el = document.getElementById('unit-' + id);
+		if(el != null)
+			document.getElementById('tooltip').innerHTML = el.innerHTML;
+	};
 	
+	/*
+		FORCE BUILDING FUNCTIONS
+	*/
 	//add a unit to first free slot
 	$scope.addUnit = function(id){
 		var I = parseInt(id);
@@ -144,9 +194,10 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 			$scope.addToSlot(unitType, pos, I);
 		}
 	};
-	
+	//adds unit to specific slot
 	$scope.addToSlot = function(section, slot, id){
 		var unitType, valid = true;
+		id = parseInt(id);
 		if(id <= 50){
 			unitType = id;
 		}else{
@@ -160,21 +211,17 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		}
 		
 		//no duplicate reinforcements
-		if(unitType == 50 && $scope.forceData[unitType].indexOf(id) !== -1)
+		if(section == 50 && $scope.forceData[50].indexOf(id) !== -1)
 				valid = false;
 				
 		if(valid)
 			$scope.forceData[section][slot] = id;
 	};
-	
-	$scope.uniqueExists = function(sec, id){
-		id = parseInt(id);
-		if($scope.units[id].unitUnique == 0) return false;
-		return($scope.forceData[sec].indexOf(id) != -1 || $scope.forceData[50].indexOf(id) != -1);
-	};
-	$scope.removeUnit = function(section, position){
+	//remove unit from specific slot
+	$scope.removeSlot = function(section, position){
 		$scope.forceData[section][position] = 0;
 	};
+	//load force code into slots
 	$scope.loadForceCode = function(str){
 		var ids = str.split(",");
 		var formation = ids[1];
@@ -198,5 +245,17 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		
 		$scope.$apply();
 	};
-	
+	//fills up the force data array with empty slots in necessary
+	$scope.padForce = function(){
+		for(var t in $scope.types){
+			if(typeof $scope.forceData[t] === "undefined")
+				$scope.forceData[t] = [];
+			var l = $scope.formations[$scope.formationActualSelect][t];
+			if(t == 50) l = 50;
+			while($scope.forceData[t].length < l)
+				$scope.forceData[t].push(0);
+			if($scope.forceData[t].length >= l)
+				$scope.forceData[t] = $scope.forceData[t].slice(0, l);
+		}
+	};
 });

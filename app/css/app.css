@@ -28,6 +28,13 @@
 	-khtml-opacity: .30; /* Safari 1.x */
 	-moz-opacity: .30; /* FF lt 1.5, Netscape */
 }
+.unit-fake-disabled{
+	opacity: .30; /* Standard: FF gt 1.5, Opera, Safari, CSS3 */
+	filter: alpha(opacity=30); /* IE lt 8 */
+	-ms-filter: "alpha(opacity=30)"; /* IE 8 */
+	-khtml-opacity: .30; /* Safari 1.x */
+	-moz-opacity: .30; /* FF lt 1.5, Netscape */
+}
 
 .unit-re{
 	width: 30px;

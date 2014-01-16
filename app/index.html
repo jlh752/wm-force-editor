@@ -5,9 +5,9 @@
   <title>War Metal Force Editor</title>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-  <script src="lib/jquery/angular-dragdrop.min.js"></script>
   <script src="lib/angular/angular.js"></script>
   <script src="lib/angular/angular-sanitize.min.js"></script>
+  <script src="lib/jquery/angular-dragdrop.min.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
@@ -17,7 +17,7 @@
   <link href="css/app.css" rel="stylesheet" type="text/css" />
   <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
 </head>
-<body ng-controller="wmForceEdCtrl" key-checker>
+<body ng-controller="wmForceEdCtrl" key-checker init-sticky>
 	<div class="header" style="width:100%;height:200px;background-color:#555"></div>
 	<div id="scroller-anchor"></div>
 	<div id="scroller">	
@@ -45,13 +45,27 @@
 			<div class="unused_section" ng-repeat="type in [1,2,4,11,12,0]">
 				<h3>{{types[type].typeName}}</h3>
 				<div
-				  ng-repeat="(unitID,unit) in units | hidden:hide | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true" class="unit-sidebar"
-				  ng-class="(unit.unitUnique==1?'unique':'')+(uniqueExists(type, unit.unitID)?' unit-disabled':'')"
-				  ng-mouseover='copyTooltip(unit.unitID)'
-				  back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}'
-				  mid={{unit.unitID}}
-				  sid={{type}}
-				  ng-dblclick="addUnit(unit.unitID)"
+					ng-repeat="(unitID,unit) in units | hidden:hide | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true"
+					class="unit-sidebar"
+					ng-class="{
+						'unique': (unit.unitUnique==1),
+						'unit-disabled': uniqueExists(type, unit.unitID)}"
+					ng-mouseover='copyTooltip(unit.unitID)'
+					back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}'
+					mid={{unit.unitID}}
+					sid={{type}}
+					ng-dblclick="addUnit(unit.unitID)"
+					data-drag="true"
+					data-jqyoui-options="{
+						revert: 'invalid',
+						cursor: 'move',
+						opacity: 0.7,
+						cursorAt:{top:24,left:24},
+						helper: 'clone',
+						revertDuration: 0}"
+					jqyoui-draggable="{
+						index:{{unitID}}}"
+					ng-model="blah"
 				  >
 				</div>
 			</div>
@@ -80,17 +94,46 @@
 		
 		<div class="force_section" ng-repeat="type in [1,2,4,11,12,50]">
 			<h3 ng-hide="getFormationCount(type).length == 0" >{{types[type].typeName}}</h3>
-			<div ng-repeat="(k,n) in getFormationCount(type)"
-				 ng-class="'unit-force'+' '+(type == 50?'unit-re':'')"
-				 sid={{type}}
-				 aid={{k}}
-				 ng-dblclick="removeUnit(type,k)"
-				 >
-				<div ng-class="'unit-force '+(units[forceData[type][k]].unitUnique==1?'unique':'')+' '+(type == 50?'unit-re':'')"
-					 ng-if="k < forceData[type].length && forceData[type][k] > 50"
-					 sid={{type}}
-					 mid={{forceData[type][k]}}
-					 back-img='http://www.joshhummel.com/images/units/{{units[forceData[type][k]].unitImage}}'
+			<div
+				ng-repeat="(k,n) in getFormationCount(type)"
+				ng-model="blah"
+				class="unit-force"
+				ng-class="{'unit-re':(type == 50)}"
+				sid={{type}}
+				aid={{k}}
+				ng-dblclick="removeSlot(type,k)"
+				data-drop="true"
+				jqyoui-droppable="{
+					index: {{k}},
+					onDrop: 'dropUnit'}"
+				data-jqyoui-options="{
+					accept: '{{(type == 50)?':not(.unit-disabled)':':not(.unit-disabled)[sid='+type+']'}}',
+					activeClass: '{{(type == 50)?'unit-drop-re':'unit-drop'}}',
+					hoverClass: 'unit-drop-here'					
+				}"
+				>
+				<div 
+					class="unit-force"
+					ng-model="blah"
+					ng-class="{
+						'unique': (units[forceData[type][k]].unitUnique==1),
+						'unit-re': (type == 50)}"
+					ng-if="k < forceData[type].length && forceData[type][k] > 50"
+					sid={{units[forceData[type][k]].unitClass}}
+					mid={{forceData[type][k]}}
+					back-img='http://www.joshhummel.com/images/units/{{units[forceData[type][k]].unitImage}}'
+					data-drag="true"
+					data-jqyoui-options="{
+						revert: removeRevert,
+						cursor: 'move',
+						opacity: 0.7,
+						cursorAt:{top:24,left:24},
+						helper: 'clone',
+						revertDuration: 0}"
+					jqyoui-draggable="{
+						index:{{forceData[type][k]}},
+						onStart:'dragStart',
+						onStop:'dragStop'}"
 					 >
 				</div>
 			</div>
