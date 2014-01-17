@@ -1,140 +1,134 @@
 <!doctype html>
 <html lang="en" ng-app="wmForceEd">
 <head>
-  <meta charset="utf-8">
-  <title>War Metal Force Editor</title>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-  <script src="lib/angular/angular.js"></script>
-  <script src="lib/angular/angular-sanitize.min.js"></script>
-  <script src="lib/jquery/angular-dragdrop.min.js"></script>
-  <script src="js/controllers.js"></script>
-  <script src="js/filters.js"></script>
-  <script src="js/directives.js"></script>
-  <script src="js/services.js"></script>
-  <script src="js/interaction.js"></script>
-  <script src="js/app.js"></script>
-  <link href="css/app.css" rel="stylesheet" type="text/css" />
-  <link href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+	<meta charset="utf-8">
+	<title>War Metal Force Editor</title>
+	<script src="lib/jquery/jquery-1.10.2.min.js"></script>
+	<script src="lib/jquery/jquery-ui.min.js"></script>
+	<script src="lib/jquery/jquery.layout.min.js"></script>
+	<script src="lib/jquery/jvfloat.min.js"></script>
+	<script src="lib/angular/angular.min.js"></script>
+	<script src="lib/angular/angular-sanitize.min.js"></script>
+	<script src="lib/angular/angular-dragdrop.min.js"></script>
+	<script src="js/wmed.controllers.js"></script>
+	<script src="js/wmed.filters.js"></script>
+	<script src="js/wmed.directives.js"></script>
+	<link href="css/force_ed.css" rel="stylesheet" type="text/css" />
+	<link href="css/layout-default.css" rel="stylesheet" type="text/css" />
+	<link href="css/jvfloat.css" rel="stylesheet" type="text/css" />
+	<link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
 </head>
-<body ng-controller="wmForceEdCtrl" key-checker init-sticky>
+<body   >
 	<div class="header" style="width:100%;height:200px;background-color:#555"></div>
-	<div id="scroller-anchor"></div>
-	<div id="scroller">	
-		Name/Ability Search: <input ng-model="unitSearch">
-		<br />Type filter:
-		<select ng-model="subtypeSelect">
-			<option value=""></option>
-			<option ng-repeat="(key,subtype) in subtypes | orderBy:subtypeID:true" value="{{key}}">{{subtype.subtypeName}}</option>
-		</select>
-		<div id="load">
-				<button ng-click="loadForce()">Load</button>
+	<div id="content" ng-controller="wmForceEdCtrl" key-checker sticky-sidebar layout="{west__size:'40%'}">
+		<div id="scroller-anchor"></div>
+		<div id="scroller" class="ui-layout-west">	
+			<div class="topbox">
+				<input placeholder="Unit Search" ng-model="unitSearch" style="width: 45%;">
+				
+				<select ng-model="subtypeSelect" style="width: 45%;">
+					<option value="">--Type Filter--</option>
+					<option ng-repeat="(key,subtype) in subtypes | orderBy:subtypeID:true" value="{{key}}">{{subtype.subtypeName}}</option>
+				</select>
+				<br />
+				<button ng-click="loadForce()" class="button">Load</button>
 				<div id="forceLoader" title="Enter Force Code" ng-init='initLoader()'>
 						<input type="text" name="forcecode" id="forcecode">
 				</div>
-			</form> 
-		</div>
-		
-		<div id="save">
-			<label for="save">Generate force code here:</label>
-			<button ng-click="showCode()" >Save</button>
-			<div id="save_output" style="word-break:break-all;"></div>
-		</div>
-		
-		<div id="unused">
-			<div class="unused_section" ng-repeat="type in [1,2,4,11,12,0]">
-				<h3>{{types[type].typeName}}</h3>
-				<div
-					ng-repeat="(unitID,unit) in units | hidden:hide | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true"
-					class="unit-sidebar"
-					ng-class="{
-						'unique': (unit.unitUnique==1),
-						'unit-disabled': uniqueExists(type, unit.unitID)}"
-					ng-mouseover='copyTooltip(unit.unitID)'
-					back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}'
-					mid={{unit.unitID}}
-					sid={{type}}
-					ng-dblclick="addUnit(unit.unitID)"
-					data-drag="true"
-					data-jqyoui-options="{
-						revert: 'invalid',
-						cursor: 'move',
-						opacity: 0.7,
-						cursorAt:{top:24,left:24},
-						helper: 'clone',
-						revertDuration: 0}"
-					jqyoui-draggable="{
-						index:{{unitID}}}"
-					ng-model="blah"
-				  >
+				
+					<button ng-click="showCode()" class="button">Save</button>
+					<div id="save_output" style="word-break:break-all;"></div>
+			</div>
+			
+			<div id="unused">
+				<div class="unused_section" ng-repeat="type in [1,2,4,11,12,0]">
+					<h3>{{types[type].typeName}}</h3>
+					<div
+						ng-repeat="(unitID,unit) in units | hidden:hide | subtypeFilter:subtypeSelect | unitCategoryFilter:type | filter:unitSearch | orderBy:['unitPriority']:true"
+						class="unit-sidebar"
+						ng-class="{
+							'unique': (unit.unitUnique==1),
+							'unit-disabled': uniqueExists(type, unit.unitID)}"
+						ng-mouseover='copyTooltip(unit.unitID)'
+						back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}'
+						mid={{unit.unitID}}
+						sid={{type}}
+						ng-dblclick="addUnit(unit.unitID)"
+						data-drag="true"
+						data-jqyoui-options="sidebarOptions"
+						jqyoui-draggable="{
+							index:{{unitID}}}"
+						ng-model="blah"
+					  >
+					</div>
 				</div>
 			</div>
+			<div ng-repeat="(unitID,unit) in units" id="unit-{{unit.unitID}}" style="display:none;">
+				{{unit.unitName}} ({{types[unit.unitClass].typeName}}) [{{unique(unit.unitUnique, "Unique")}}]
+				<br />{{subtypes[unit.unitType1].subtypeName}}
+				<br />{{subtypes[unit.unitType2].subtypeName}}
+				<br />Attack: {{unit.unitAttack}}
+				<br />Defence: {{unit.unitDefence}}
+				<br /><span ng-bind-html="getDescription(unit.unitID)"></span>
+			<br /></div>
+			<div id='tooltip' ></div>
 		</div>
-		<div ng-repeat="(unitID,unit) in units" id="unit-{{unit.unitID}}" style="display:none;">
-			{{unit.unitName}} ({{types[unit.unitClass].typeName}}) [{{unique(unit.unitUnique, "Unique")}}]
-			<br />{{subtypes[unit.unitType1].subtypeName}}
-			<br />{{subtypes[unit.unitType2].subtypeName}}
-			<br />Attack: {{unit.unitAttack}}
-			<br />Defence: {{unit.unitDefence}}
-			<br /><span ng-bind-html="getDescription(unit.unitID)"></span>
-		<br /></div>
-		<div id='tooltip' ></div>
-	</div>
-	
-	<div id="force">
-		<h1>Force Designer</h1>
-		<select ng-model="formationSelect">
-			<option
-			  ng-repeat="formation in formations | toarray | orderBy:-['formationID']:true"
-			  value="{{formation.formationID}}">
-				{{formation.formationName + " [" + formation.1 + "-" + formation.2 + "-" + formation.4 + "-" + formation.11 + "-" + formation.12 +"]"}}
-			</option>
-		</select>
-		<button ng-click="setFormation()">Change</button>
 		
-		<div class="force_section" ng-repeat="type in [1,2,4,11,12,50]">
-			<h3 ng-hide="getFormationCount(type).length == 0" >{{types[type].typeName}}</h3>
-			<div
-				ng-repeat="(k,n) in getFormationCount(type)"
-				ng-model="blah"
-				class="unit-force"
-				ng-class="{'unit-re':(type == 50)}"
-				sid={{type}}
-				aid={{k}}
-				ng-dblclick="removeSlot(type,k)"
-				data-drop="true"
-				jqyoui-droppable="{
-					index: {{k}},
-					onDrop: 'dropUnit'}"
-				data-jqyoui-options="{
-					accept: '{{(type == 50)?':not(.unit-disabled)':':not(.unit-disabled)[sid='+type+']'}}',
-					activeClass: '{{(type == 50)?'unit-drop-re':'unit-drop'}}',
-					hoverClass: 'unit-drop-here'					
-				}"
-				>
-				<div 
-					class="unit-force"
+		<div id="force" class="ui-layout-center">
+			<h1>Force Designer</h1>
+			<select ng-model="formationSelect">
+				<option
+				  ng-repeat="formation in formations | toarray | orderBy:-['formationID']:true"
+				  value="{{formation.formationID}}">
+					{{formation.formationName + " [" + formation.1 + "-" + formation.2 + "-" + formation.4 + "-" + formation.11 + "-" + formation.12 +"]"}}
+				</option>
+			</select>
+			<button ng-click="setFormation()" class="button">Change</button>
+			
+			<div class="force_section" ng-repeat="type in [1,2,4,11,12,50]">
+				<h3 ng-hide="getFormationCount(type).length == 0" >{{types[type].typeName}}</h3>
+				<div
+					ng-repeat="(k,n) in getFormationCount(type)"
 					ng-model="blah"
-					ng-class="{
-						'unique': (units[forceData[type][k]].unitUnique==1),
-						'unit-re': (type == 50)}"
-					ng-if="k < forceData[type].length && forceData[type][k] > 50"
-					sid={{units[forceData[type][k]].unitClass}}
-					mid={{forceData[type][k]}}
-					back-img='http://www.joshhummel.com/images/units/{{units[forceData[type][k]].unitImage}}'
-					data-drag="true"
+					class="unit-force"
+					ng-class="{'unit-re':(type == 50)}"
+					sid={{type}}
+					aid={{k}}
+					ng-dblclick="removeSlot(type,k)"
+					data-drop="true"
+					jqyoui-droppable="{
+						index: {{k}},
+						onDrop: 'dropUnit'}"
 					data-jqyoui-options="{
-						revert: removeRevert,
-						cursor: 'move',
-						opacity: 0.7,
-						cursorAt:{top:24,left:24},
-						helper: 'clone',
-						revertDuration: 0}"
-					jqyoui-draggable="{
-						index:{{forceData[type][k]}},
-						onStart:'dragStart',
-						onStop:'dragStop'}"
-					 >
+						accept: '{{(type == 50)?':not(.unit-disabled)':':not(.unit-disabled)[sid='+type+']'}}',
+						activeClass: '{{(type == 50)?'unit-drop-re':'unit-drop'}}',
+						hoverClass: 'unit-drop-here'					
+					}"
+					>
+					<div 
+						class="unit-force"
+						ng-model="blah"
+						ng-class="{
+							'unique': (units[forceData[type][k]].unitUnique==1),
+							'unit-re': (type == 50)}"
+						ng-if="k < forceData[type].length && forceData[type][k] > 50"
+						sid={{units[forceData[type][k]].unitClass}}
+						mid={{forceData[type][k]}}
+						back-img='http://www.joshhummel.com/images/units/{{units[forceData[type][k]].unitImage}}'
+						data-drag="true"
+						data-jqyoui-options="{
+							revert: removeRevert,
+							cursor: 'move',
+							opacity: 0.7,
+							cursorAt:{top:24,left:24},
+							helper: 'clone',
+							revertDuration: 0}"
+						jqyoui-draggable="{
+							index:{{forceData[type][k]}},
+							onStart:'dragStart',
+							onStop:'dragStop'}"
+						 >
+					</div>
 				</div>
 			</div>
 		</div>
