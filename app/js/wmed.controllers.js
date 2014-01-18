@@ -70,10 +70,11 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 	$scope.sidebarOptions = {
 		revert: 'invalid',
 		cursor: 'move',
+		helper: 'clone',
+		appendTo: 'body',
 		opacity: 0.7,
 		cursorAt:{top:24,left:24},
-		revertDuration: 0,
-		helper: function(){return $(this).clone().appendTo('body').show();}//otherwise the clone gets stuck in the sidebar
+		revertDuration: 0
 	};
 	$scope.lastDragged = null;
 	//when a unit is dropped on a valid spot

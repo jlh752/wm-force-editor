@@ -29,6 +29,7 @@ button{
 #content{
 	position: relative;
 	min-height: 100%;
+	overflow:auto;
 }
 
 .ui-draggable{
