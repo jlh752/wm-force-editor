@@ -111,6 +111,7 @@
 						ng-class="{
 							'unique': (units[forceData[type][k]].unitUnique==1),
 							'unit-re': (type == 50)}"
+						ng-mouseover='copyTooltip(forceData[type][k])'
 						ng-if="k < forceData[type].length && forceData[type][k] > 50"
 						sid={{units[forceData[type][k]].unitClass}}
 						mid={{forceData[type][k]}}
