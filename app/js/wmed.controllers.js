@@ -133,7 +133,7 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		$('.unit-force').each(function(ind, e){
 			if($(e).is("[aid]")){
 				if($(e).children().length == 0)
-					out += $(e).attr("sid") + ",";
+					out += $(e).parent().attr("sid") + ",";
 			}else{
 				out += $(e).attr("mid") + ",";
 			}
