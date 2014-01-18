@@ -128,16 +128,22 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		OTHER INTERFACE
 	*/
 	$scope.showCode = function(){
-		var out = "<textarea>1,";
+		var out = "<span style='font-size:14px'>Copy this force code to use the force elsewhere</span><textarea>1,";
 		out += $scope.formationActualSelect + ",";
+		var reCount = 0;
 		$('.unit-force').each(function(ind, e){
 			if($(e).is("[aid]")){
-				if($(e).children().length == 0)
-					out += $(e).parent().attr("sid") + ",";
+				if($(e).children().length == 0){
+					out += $(e).attr("sid") + ",";
+					if($(e).attr("sid") == 50)
+						reCount++;
+				}
 			}else{
 				out += $(e).attr("mid") + ",";
+				reCount = 0;
 			}
 		});
+		out = out.substr(0, out.length-3*reCount);
 		$('#save_output').html(out+"</textarea>").dialog({
 			title: 'Force Code',
 			buttons: {
@@ -227,7 +233,7 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		}
 		
 		//no duplicate reinforcements
-		if(section == 50 && $scope.forceData[50].indexOf(id) !== -1)
+		if(section == 50 && $scope.forceData[50].indexOf(id) !== -1 && id > 50)
 				valid = false;
 				
 		if(valid)

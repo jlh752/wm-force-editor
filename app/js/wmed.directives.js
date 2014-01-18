@@ -28,17 +28,10 @@ wmForceEd.directive('backImg', function(){
 wmForceEd.directive('stickySidebar', function(){
 	var sticky_relocate = function(){
 		var window_top = $(window).scrollTop();
-		var div_top = $('#scroller-anchor').offset().top;
-		if (window_top > div_top){
-			$('#scroller').addClass('sticky');
-			$("#unused").height($(window).height()/* - $("#unused").position().top*/);
-			console.log("A", window_top, div_top);
-		}else{
-			$('#scroller').removeClass('sticky');
-			$("#scroller").height($(window).height()-$("#scroller").offset().top +window_top);
-			$("#unused").height($("#scroller").height()-$(".topbox").height());
-			console.log("B", window_top, div_top, $("#scroller").offset().top);
-		}
+		$('#scroller').removeClass('sticky');
+		$("#scroller").height($(window).height()-$("#scroller").offset().top +window_top);
+		$("#unused").height($("#scroller").height()-$(".topbox").height());
+		$("#force").height($(window).height()-$("#force").offset().top +window_top);
 	};
 	return{
 		restrict: 'A',
