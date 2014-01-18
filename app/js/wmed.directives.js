@@ -27,8 +27,7 @@ wmForceEd.directive('backImg', function(){
 });
 wmForceEd.directive('stickySidebar', function(){
 	var sticky_relocate = function(){
-		var window_top = $(window).scrollTop();
-		$('#scroller').removeClass('sticky');
+		var window_top = $(window).scrollTop();	
 		$("#scroller").height($(window).height()-$("#scroller").offset().top +window_top);
 		$("#unused").height($("#scroller").height()-$(".topbox").height());
 		$("#force").height($(window).height()-$("#force").offset().top +window_top);

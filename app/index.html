@@ -65,7 +65,7 @@
 				</div>
 			</div>
 			<div ng-repeat="(unitID,unit) in units" id="unit-{{unit.unitID}}" style="display:none;">
-				{{unit.unitName}} ({{types[unit.unitClass].typeName}}) [{{unique(unit.unitUnique, "Unique")}}]
+				{{unit.unitName}} ({{types[unit.unitClass].typeName}}) {{unique(unit.unitUnique, "[Unique]")}}
 				<br />{{subtypes[unit.unitType1].subtypeName}}
 				<br />{{subtypes[unit.unitType2].subtypeName}}
 				<br />Attack: {{unit.unitAttack}}

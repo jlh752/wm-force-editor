@@ -13,7 +13,7 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 	
 	$(".button").button();
 	
-	$http.get('data.json').success(function(data) {
+	$http.get('force.unitdata.php').success(function(data) {
 		$scope.units = data['units'];
 		$scope.formations = data['formations'];
 		$scope.skills = data['skills'];
