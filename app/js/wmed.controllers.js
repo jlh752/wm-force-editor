@@ -130,13 +130,19 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 	$scope.showCode = function(){
 		var out = "<span style='font-size:14px'>Copy this force code to use the force elsewhere</span><textarea>1,";
 		out += $scope.formationActualSelect + ",";
-		var reCount = 0;
+		var reCount = 0, firstReinf = true;
 		$('.unit-force').each(function(ind, e){
 			if($(e).is("[aid]")){
+				var isReinf = ($(e).attr("sid") == 50);
+				if(isReinf && firstReinf){//boost slot to add compatibility with older tools
+					out += "0,0,";
+					firstReinf = false;
+				}
 				if($(e).children().length == 0){
 					out += $(e).attr("sid") + ",";
-					if($(e).attr("sid") == 50)
+					if(isReinf){
 						reCount++;
+					}
 				}
 			}else{
 				out += $(e).attr("mid") + ",";
