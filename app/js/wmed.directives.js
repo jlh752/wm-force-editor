@@ -54,7 +54,7 @@ wmForceEd.directive('keyChecker', function(){
 	return{
 		restrict: 'A',
 		link: function(scope, element, attrs){
-			$(element).on({
+			$("body").on({
 				keydown: function(e){
 					scope.shiftDown = e.shiftKey;
 				},
