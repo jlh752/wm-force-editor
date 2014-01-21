@@ -1,7 +1,5 @@
 'use strict';
 
-/* jasmine specs for filters go here */
-
 describe('filter tests', function() {
 	var scope;
 	beforeEach(module('wmForceEd'));
@@ -34,29 +32,6 @@ describe('filter tests', function() {
 			"3":{"subtypeName":"Infantry"}
 		}
 	};
-
-
-/*wmForceEd.filter('hidden', function() {
-	return function(input, hide){
-		var out = [];
-		if(!hide) return input;
-		for(var i in input){
-			if(input[i].unitHidden === '0')
-				out.push(input[i]);
-		}
-		return out;
-	};
-});
-wmForceEd.filter('toarray', function() {
-	return function(input, type){
-		var out = [];
-		for(var i in input){
-			input[i].id = i;
-			out.push(input[i]);
-		}
-		return out;
-	}; 
-});*/
 	it('filter by units types',
 		inject(function(unitCategoryFilter){
 			expect(unitCategoryFilter(testData["units"], 1).length).toBe(3);
@@ -72,6 +47,12 @@ wmForceEd.filter('toarray', function() {
 		inject(function(hiddenFilter){ 
 			expect(hiddenFilter(testData["units"], true).length).toBe(3);
 			expect(hiddenFilter(testData["units"], false).length).toBe(5);
+		})
+	);
+	it('filter by toarray',
+		inject(function(toarrayFilter){ 
+			expect(toarrayFilter(testData["units"]).length).toBe(Object.keys(testData["units"]).length);
+			expect(toarrayFilter(testData["units"]).length).toBe(Object.keys(testData["units"]).length);
 		})
 	);
 });
