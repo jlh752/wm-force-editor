@@ -7,13 +7,29 @@ var wmForceEd = angular.module('wmForceEd', ['ngSanitize', 'ngDragDrop']);
 wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 	$scope.formationSelect = 1;
 	$scope.formationActualSelect = 1;
-	$scope.hide = 1;//hide unreleased units
 	$scope.shiftDown = false;
 	$scope.forceData = {};
 	
+	var qs = (function(a) {
+		if (a == "") return {};
+		var b = {};
+		for (var i = 0; i < a.length; ++i)
+		{
+			var p=a[i].split('=');
+			if (p.length != 2) continue;
+			b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+		}
+		return b;
+	})(window.location.search.substr(1).split('&'));
+	$scope.hide = ('full' in qs)?false:true;//hide unreleased units
+	
 	$(".button").button();
 	
-	$http.get('force.unitdata.php').success(function(data) {
+	$http.get("data.json"/*'force.unitdata.php'*/).success(function(data) {
+		$scope.loadData(data);
+	});
+	
+	$scope.loadData = function(data){
 		$scope.units = data['units'];
 		$scope.formations = data['formations'];
 		$scope.skills = data['skills'];
@@ -35,7 +51,7 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 			$scope.units[u].unitDescription = text;
 		}
 		$scope.padForce();
-	});
+	};
 	
 	/*
 		BINDING RELATED FUNCTIONS

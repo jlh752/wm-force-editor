@@ -1,7 +1,7 @@
 'use strict';
 
 /* Filters */
-wmForceEd.filter('unitCategoryFilter', function() {
+wmForceEd.filter('unitCategory', function() {
 	return function(input, type) {
 		var out = [];
 		for(var i in input){
@@ -12,7 +12,7 @@ wmForceEd.filter('unitCategoryFilter', function() {
 		return out;
 	};
 });
-wmForceEd.filter('subtypeFilter', function() {
+wmForceEd.filter('unitSubtype', function() {
 	return function(input, type){
 		var out = [];
 		if(type == '' || type == undefined) return input;
@@ -26,16 +26,15 @@ wmForceEd.filter('subtypeFilter', function() {
 wmForceEd.filter('hidden', function() {
 	return function(input, hide){
 		var out = [];
-		if(!hide) return input;
 		for(var i in input){
-			if(input[i].unitHidden === '0')
+			if(!hide || input[i].unitHidden === '0')
 				out.push(input[i]);
 		}
 		return out;
 	};
 });
 wmForceEd.filter('toarray', function() {
-	return function(input, type){
+	return function(input){
 		var out = [];
 		for(var i in input){
 			input[i].id = i;

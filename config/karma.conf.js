@@ -3,18 +3,24 @@ module.exports = function(config){
     basePath : '../',
 
     files : [
-      'app/lib/angular/angular.js',
-      'app/lib/angular/angular-*.js',
-      'test/lib/angular/angular-mocks.js',
-	  'test/lib/jquery.simulate.js'
-      'app/js/**/*.js',
-      'test/unit/**/*.js'
-    ],
-
-    exclude : [
-      'app/lib/angular/angular-loader.js',
-      'app/lib/angular/*.min.js',
-      'app/lib/angular/angular-scenario.js'
+      'app/lib/jquery/jquery-1.10.2.min.js',
+      'app/lib/jquery/jquery-ui.min.js',
+      'app/lib/jquery/jquery.layout.min.js',
+      'app/lib/jquery/jvfloat.min.js',
+      'app/lib/angular/angular.min.js',
+      'app/lib/angular/angular-sanitize.min.js',
+      'app/lib/angular/angular-dragdrop.min.js',
+      'app/js/wmed.controllers.js',
+      'app/js/wmed.filters.js',
+      'app/js/wmed.directives.js',
+	  
+	  'test/lib/angular/angular-mocks.js',
+	  'test/lib/jquery.simulate.js',
+	  
+	  'test/unit/controllersSpec.js',
+	  'test/unit/filtersSpec.js',
+	  'test/unit/directivesSpec.js',
+	  'test/unit/servicesSpec.js',
     ],
 
     autoWatch : true,
