@@ -25,9 +25,11 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 	
 	$(".button").button();
 	
-	$http.get("data.json"/*'force.unitdata.php'*/).success(function(data) {
-		$scope.loadData(data);
-	});
+	$scope.downloadData = function(file){
+		$http.get(file).success(function(data){
+			$scope.loadData(data);
+		});
+	};
 	
 	$scope.loadData = function(data){
 		$scope.units = data['units'];

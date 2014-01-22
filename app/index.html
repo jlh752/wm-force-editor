@@ -20,7 +20,7 @@
 </head>
 <body   >
 	<div class="header" style="width:100%;height:230px;background-color:#555"></div>
-	<div id="holder" ng-controller="wmForceEdCtrl" key-checker sticky-sidebar layout="{west__size:'40%'}">
+	<div id="holder" ng-controller="wmForceEdCtrl" key-checker sticky-sidebar layout="{west__size:'40%'}" load-unit-data='data.json'>
 		<div id="scroller-anchor"></div>
 		<div id="scroller" class="ui-layout-west">	
 			<div class="topbox">
@@ -51,7 +51,7 @@
 							'unique': (unit.unitUnique==1),
 							'unit-disabled': uniqueExists(type, unit.unitID)}"
 						ng-mouseover='copyTooltip(unit.unitID)'
-						back-img='http://www.joshhummel.com/images/units/{{unit.unitImage}}'
+						back-img
 						mid={{unit.unitID}}
 						sid={{type}}
 						ng-dblclick="addUnit(unit.unitID)"

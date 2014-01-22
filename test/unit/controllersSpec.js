@@ -40,6 +40,7 @@ describe('controllers', function(){
 			
 			scope = $rootScope.$new();
 			ctrl = $controller('wmForceEdCtrl', {$scope: scope});
+			scope.downloadData('data.json');
 		}));
 
 		it('should create some models based on xhr', function() {

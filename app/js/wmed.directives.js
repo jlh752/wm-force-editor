@@ -49,6 +49,15 @@ wmForceEd.directive('stickySidebar', function(){
 	};
 });
 
+wmForceEd.directive('loadUnitData', function(){
+	return{
+		restrict: 'A',
+		link: function(scope, element, attrs){
+			scope.downloadData(attrs['loadUnitData']);
+		}
+	};
+});
+
 wmForceEd.directive('keyChecker', function(){
 	return{
 		restrict: 'A',
@@ -56,7 +65,7 @@ wmForceEd.directive('keyChecker', function(){
 			$("body").on({
 				keydown: function(e){
 					scope.shiftDown = e.shiftKey;
-				},
+				}, 
 				keyup: function(e){
 					scope.shiftDown = e.shiftKey;
 				}
