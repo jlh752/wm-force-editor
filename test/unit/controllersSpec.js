@@ -49,6 +49,7 @@ describe('controllers', function(){
 			expect(scope.skills).toBeUndefined();
 			expect(scope.types).toBeUndefined();
 			expect(scope.subtypes).toBeUndefined();
+			
 			$httpBackend.flush();
 
 			expect(scope.units.length).toEqual(testData['units'].length);
@@ -56,6 +57,51 @@ describe('controllers', function(){
 			expect(scope.skills.length).toEqual(testData['skills'].length);
 			expect(scope.types.length).toEqual(testData['types'].length);
 			expect(scope.subtypes.length).toEqual(testData['subtypes'].length);
+		});
+		
+		/* binding related */
+		
+		it('create an array of n length', function() {
+			expect(scope.getNumber(5).length).toBe(5);
+			expect(scope.getNumber(0).length).toBe(0);
+			expect(scope.getNumber().length).toBe(0);
+		});
+		
+		it('gets the number of elements in the formation for that section', function() {			
+			$httpBackend.flush();
+			expect(scope.getFormationCount(1).length).toEqual(1);
+			expect(scope.getFormationCount(2).length).toEqual(2);
+			scope.formationActualSelect = '36';
+			expect(scope.getFormationCount(1).length).toEqual(3);
+			expect(scope.getFormationCount(4).length).toEqual(4);
+			expect(scope.getFormationCount(11).length).toEqual(0);
+		});
+		
+		it('0/1 notation to string for unique', function() {
+			expect(scope.unique(0, "unique")).toBe("");
+			expect(scope.unique(1, "unique")).toBe("unique");
+			expect(scope.unique(1, "")).toBe("");
+		});
+		
+		it('see if unique unit exists in formation', function() {			
+			$httpBackend.flush();
+			scope.forceData = {'1':[],'2':[],'50':[]};
+			expect(scope.uniqueExists(1, '1000')).toEqual(false);
+			scope.forceData = {'1':[1000],'2':[],'50':[]};
+			expect(scope.uniqueExists(1, '1000')).toEqual(true);
+			scope.forceData = {'1':[1000],'2':[2001],'50':[]};
+			expect(scope.uniqueExists(2, '2001')).toEqual(false);//because 2001 is not unique
+			scope.forceData = {'1':[1000],'2':[],'50':[1304]};
+			expect(scope.uniqueExists(1, '1304')).toEqual(true);
+		});
+		
+		it('see if formation changes correctly', function() {			
+			$httpBackend.flush();
+			expect(scope.forceData['1'].length).toEqual(1);
+			scope.formationSelect = '36';
+			scope.setFormation();
+			expect(scope.forceData['1'].length).toEqual(3);
+			expect(scope.forceData['2'].length).toEqual(12);
 		});
 	});
 });

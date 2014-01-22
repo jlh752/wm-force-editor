@@ -10,6 +10,8 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 	$scope.shiftDown = false;
 	$scope.forceData = {};
 	
+	//parse the url GET parameters
+	//http://stackoverflow.com/a/3855394/1690495
 	var qs = (function(a) {
 		if (a == "") return {};
 		var b = {};
