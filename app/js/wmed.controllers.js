@@ -201,11 +201,23 @@ wmForceEd.controller('wmForceEdCtrl', function($scope, $http) {
 		return $scope.units[id].unitDescription;
 	};
 	//generate tooltip suitable version of description text
-	$scope.copyTooltip = function(id){
-		var el = document.getElementById('unit-' + id);
-		if(el != null)
-			document.getElementById('tooltip').innerHTML = el.innerHTML;
+	$scope.copyTooltip_in = function(id, $event){
+		var content = document.getElementById('unit-' + id).innerHTML;
+		var el = document.getElementById('tooltip');
+		if(el != null){
+			var t = $event.clientY+10, l = $event.clientX, w = el.style.width;
+			var efp = (document.elementFromPoint?document.elementFromPoint(l+w, t):el);
+			if(efp == null || efp.tagName == "HTML") l -= w;
+			el.innerHTML = content;
+			el.style.top = t+"px";
+			el.style.left = l+"px";
+			el.style.display = 'inline';
+		}
 	};
+	$scope.copyTooltip_out = function(id, $event){
+		var el = document.getElementById('tooltip').style.display = 'none';
+	};
+	
 	
 	/*
 		FORCE BUILDING FUNCTIONS

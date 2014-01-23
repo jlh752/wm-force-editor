@@ -141,10 +141,10 @@ button{
 #tooltip{
 	font-size: 90%;
 	background-color: #CCC;
-	
-	position: absolute;
-	bottom: 0;
-	left: 0px; right: 18px
+	position: fixed;
+	width: 200px;
+	display: none;
+	z-index: 100;
 }
 .sticky {
 	position: fixed !important;
