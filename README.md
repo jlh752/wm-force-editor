@@ -4,6 +4,7 @@ War Metal Force Editor
 This project allows you to build a force for War Metal using a web browser drag-and-drop interface.
 
 ##Usage
+Demo: http://jlh752.github.io/wm-force-editor
 A live copy of this is available here: http://greymarch.x10.mx/force_ed.php
 
 Drag units from the left-hand area to valid slot in the formation in the right-hand area. The game logic of War Metal is implemented here; for example, you may only use one instance of unique units. Holding shift while dragging a unit in your formation will attempt to duplicate the unit if possible (rather than just moving it). By double clicking on a unit, it will perform the action which would happen in the actual War Metal force builder (e.g. a unit in formation will be removed, a unit in the left-hand area will be added to the first available slot).
