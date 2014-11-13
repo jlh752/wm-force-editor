@@ -25,10 +25,10 @@ describe('directives', function() {
 		$rootScope.$digest();
 		
 		var el = $(element.find(".unit-sidebar")[0]);
-		expect(el.css('background-image')).toBe('url("http://www.joshhummel.com/images/units/basicinfantry.jpg")');
+		expect(el.css('background-image')).toBe('url(http://www.joshhummel.com/images/units/basicinfantry.jpg)');
 		el.attr("mid", '2003');
 		$rootScope.$digest();
-		expect(el.css('background-image')).toBe('url("http://www.joshhummel.com/images/units/spacemarineJ.jpg")');
+		expect(el.css('background-image')).toBe('url(http://www.joshhummel.com/images/units/spacemarineJ.jpg)');
 	}));
 	
 	it('keypress test', inject(function ($rootScope, $compile, $controller){
